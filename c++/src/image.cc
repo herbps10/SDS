@@ -1,7 +1,10 @@
-#include "image.h"
-
 Image::Image() {
 	
+}
+
+void Image::loadPath(string path) {
+	CImg<int> img(path.c_str());
+	image = img;
 }
 
 void Image::loadCImg(cimg_library::CImg<int> img) {
@@ -11,7 +14,7 @@ void Image::loadCImg(cimg_library::CImg<int> img) {
 /*
  * Finds the average color of a subset of the image
  */
-int Image::average(int x, int y, int w, int h) {
+int* Image::average(int x, int y, int w, int h) {
 	int r = 0, b = 0, g = 0;
 	int size = w * h;
 
@@ -27,13 +30,18 @@ int Image::average(int x, int y, int w, int h) {
 	g /= size;
 	b /= size;
 
-	return SDL_MapRGB(SDL::getInstance().screen->format, r, g, b);
+	int *colors = new int[3];
+	colors[0] = r;
+	colors[1] = g;
+	colors[2] = b;
+
+	return colors;
 }
 
 /*
  * Find the color average of the whole image
  */
-int Image::average() {
+int* Image::average() {
 	return average(0, 0, image.width(), image.height());
 }
 
@@ -41,28 +49,34 @@ int Image::average() {
  * Draws the image to the SDL screen at the given coordinates
  *
  */
-void Image::drawImage(int xOffset, int yOffset) {
+void Image::drawImage() {
 	// This works by looping through every pixel of the cimg and drawing it on the SDL surface
 	cimg_forXY(image, x, y) {
 		// Make sure we don't try to write outside the window
-		if(x + xOffset < SCREEN_X && y + yOffset < SCREEN_Y) {
-			SDL::getInstance().drawPixel(x + xOffset, y + yOffset, image.atXY(x, y, 0), image.atXY(x, y, 1), image.atXY(x, y, 2));
-		}
+		int color = SDL_MapRGB(SDL::getInstance().screen->format, image.atXY(x, y, 0), image.atXY(x, y, 1), image.atXY(x, y, 2));
+
+		SDL::getInstance().drawFilledRect(
+			BORDER_X + (x * PIXEL_SIZE),
+			BORDER_Y + (y * PIXEL_SIZE),
+			PIXEL_SIZE,
+			PIXEL_SIZE,
+			color
+		);
+
 	}
 }
 
-/*
- * Draws the image to the SDL screen at the origin
- */
-void Image::drawImage() {
-	drawImage(0, 0);
-}
+int* Image::colorAtXY(int x, int y) {
+	int *colors = new int[3];
+	//cout << "colorAtXY: ";
+	for(int i = 0; i < 3; i++) {
+		//cout << image.atXY(x, y, i) << " ";
+		colors[i] = image.atXY(x, y, i);
+	}
 
-/*
- * Resize the image to the correct size as given in the config.h file
- */
-void Image::resizeToConfig() {
-	image.resize(RESIZE_X, RESIZE_Y);
+	//cout << endl;
+	
+	return colors;
 }
 
 int Image::width() {

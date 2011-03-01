@@ -65,7 +65,7 @@ class Search
 	end
 
 	# Draws the haystack image to the screen
-	def draw()
+	def draw
 		@haystack.columns.times do |column|
 			@haystack.rows.times do |row|
 				pixel = @haystack.pixel_color(column, row)

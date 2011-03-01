@@ -6,13 +6,13 @@ class Image {
 
 	public:
 	Image();
+	void loadPath(string path);
 	void loadCImg(cimg_library::CImg<int> img);
-	int average();
-	int average(int x, int y, int w, int h);
+	int* average();
+	int* average(int x, int y, int w, int h);
 	void drawImage();
-	void drawImage(int xOffset, int yOffset);
-	void resizeToConfig();
 	int width();
 	int height();
 	void addText(string str);
+	int* colorAtXY(int x, int y);
 };
