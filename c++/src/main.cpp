@@ -11,6 +11,8 @@
 #include "SDL/SDL_ttf.h"
 #include "CImg.h"
 
+#include "mpi.h"
+
 using namespace cimg_library;
 using namespace std;
 

@@ -16,7 +16,7 @@ void Search::init(string haystack_path, string needle_path) {
 	area = needle->width() * needle->height();
 
 	//max_pixel_distance = 3 * PIXEL_COLOR_MAX;
-	max_pixel_distance = sqrt(3 * pow(PIXEL_COLOR_MAX, 2)); // This is the one for euclidian
+	max_pixel_distance = sqrt((double)3 * pow(PIXEL_COLOR_MAX, 2.0)); // This is the one for euclidian
 
 	max_distance = area * max_pixel_distance;
 }
@@ -81,7 +81,7 @@ int Search::fitness(int x, int y, int width, int height) {
 int Search::rgb_distance_euclidian(int* color1, int* color2) {
 	int distance = 0;
 	for(int i = 0; i < 3; i++) {
-		distance += pow(*(color1 + i) - *(color2 + i), 2);
+		distance += pow((double)*(color1 + i) - (double)*(color2 + i), 2);
 	}
 
 	distance = sqrt(distance);
