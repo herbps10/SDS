@@ -50,19 +50,22 @@ int* Image::average() {
  *
  */
 void Image::drawImage() {
-	// This works by looping through every pixel of the cimg and drawing it on the SDL surface
-	cimg_forXY(image, x, y) {
-		// Make sure we don't try to write outside the window
-		int color = SDL_MapRGB(SDL::getInstance().screen->format, image.atXY(x, y, 0), image.atXY(x, y, 1), image.atXY(x, y, 2));
+	Image::drawRect(0, 0, image.width(), image.height());
+}
 
-		SDL::getInstance().drawFilledRect(
-			BORDER_X + (x * PIXEL_SIZE),
-			BORDER_Y + (y * PIXEL_SIZE),
-			PIXEL_SIZE,
-			PIXEL_SIZE,
-			color
-		);
+void Image::drawRect(int startx, int starty, int w, int h) {
+	for(int x = startx; x < startx + w; x++) {
+		for(int y = starty; y < starty + h; y++) {
+			int color = SDL_MapRGB(SDL::getInstance().screen->format, image.atXY(x, y, 0), image.atXY(x, y, 1), image.atXY(x, y, 2));
 
+			SDL::getInstance().drawFilledRect(
+				BORDER_X + ((x-startx) * PIXEL_SIZE),
+				BORDER_Y + ((y-starty) * PIXEL_SIZE),
+				PIXEL_SIZE,
+				PIXEL_SIZE,
+				color
+			);	
+		}
 	}
 }
 

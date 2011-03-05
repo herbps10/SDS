@@ -11,13 +11,25 @@ void Search::init(string haystack_path, string needle_path) {
 	haystack = new Image();
 	haystack->loadPath(haystack_path);
 	
+	// Calculate which part of the image this node should look at
+	node_width = haystack->width() / MyMPI::getInstance().ncol;
+	node_height = haystack->height() / MyMPI::getInstance().nrow;
+	node_x = MyMPI::getInstance().col * node_width;
+	node_y = MyMPI::getInstance().row * node_height;
+
+	PIXEL_SIZE = SCREEN_WIDTH / node_width;
+
+	// Save the average color of the needle image
 	needle_average = needle->average();
 
+	// Calculate area of the needl image
 	area = needle->width() * needle->height();
 
+	// The max pixel distance is the theoretical farthest one pixel's color can differ from another
 	//max_pixel_distance = 3 * PIXEL_COLOR_MAX;
 	max_pixel_distance = sqrt((double)3 * pow(PIXEL_COLOR_MAX, 2.0)); // This is the one for euclidian
 
+	// The max distance is the theoretical farthest that the needle image can differ from another image
 	max_distance = area * max_pixel_distance;
 }
 
@@ -99,7 +111,7 @@ int Search::rgb_distance_sum(int* color1, int* color2) {
 }
 
 void Search::draw() {
-	haystack->drawImage();
+	haystack->drawRect(node_x, node_y, node_width, node_height);
 }
 
 int Search::haystack_width() {
