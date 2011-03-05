@@ -10,6 +10,7 @@ class Image {
 	void loadCImg(cimg_library::CImg<int> img);
 	int* average();
 	int* average(int x, int y, int w, int h);
+	void drawRect(int startx, int starty, int w, int h);
 	void drawImage();
 	int width();
 	int height();

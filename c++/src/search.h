@@ -17,6 +17,8 @@ class Search {
 
 		static Search instance;
 
+		int node_width, node_height, node_x, node_y;
+
 	private:
 		Image* needle;
 		Image* haystack;

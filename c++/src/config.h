@@ -9,7 +9,7 @@ const string HAYSTACK_PATH = "images/people-needle.png";
 const int START_BEST_PERCENTAGE = 30;
 
 // Graphics Settings
-const bool FULLSCREEN = false;
+const bool FULLSCREEN = true;
 
 int SCREEN_WIDTH = 1200;
 int SCREEN_HEIGHT = 600;
@@ -17,7 +17,7 @@ int SCREEN_HEIGHT = 600;
 const int BORDER_X = 40;
 const int BORDER_Y = 40;
 
-const int PIXEL_SIZE = 1; // How large each pixel from the search image should appear on the screen. Set to this to 1 for no scaling.
+int PIXEL_SIZE = 1; // How large each pixel from the search image should appear on the screen. Set to this to 1 for no scaling.
 
 const int PIXEL_COLOR_MAX = 255;
 const int OFF_SCREEN_DISTANCE_PENALTY = 100;

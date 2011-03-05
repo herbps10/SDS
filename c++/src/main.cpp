@@ -1,3 +1,5 @@
+#include "mpi.h"
+
 #include <string>
 #include <stdio.h>
 #include <iostream>
@@ -11,8 +13,6 @@
 #include "SDL/SDL_ttf.h"
 #include "CImg.h"
 
-#include "mpi.h"
-
 using namespace cimg_library;
 using namespace std;
 
@@ -24,12 +24,14 @@ using namespace std;
 #include "search.h"
 #include "agent.h"
 #include "agents.h"
+#include "mympi.h"
 
 #include "sdl.cc"
 #include "image.cc"
 #include "search.cc"
 #include "agent.cc"
 #include "agents.cc"
+#include "mympi.cc"
 
 bool quitEvent() {
 	bool quit = false;
@@ -86,9 +88,13 @@ void sds() {
 int main(int argc, char* args[]) {
 	srand(time(NULL));
 
+	MyMPI::getInstance().init(argc, args);
+
+	cout << MyMPI::getInstance().rank << " Col: " << MyMPI::getInstance().col << " Row: " << MyMPI::getInstance().row <<  endl;
+
 	SDL::getInstance().init();
 
-	Search::getInstance().init("/home/herb/git/SDS/images/people.png", "/home/herb/git/SDS/images/nick.png");
+	Search::getInstance().init("/home/hps1/SDS/images/people.png", "/home/hps1/SDS/images/nick.png");
 
 	Agents::getInstance().init();
 
@@ -119,6 +125,8 @@ int main(int argc, char* args[]) {
 	*/
 
 	SDL::getInstance().quit();
+
+	MyMPI::getInstance().quit();
 
 	return 0;
 }
